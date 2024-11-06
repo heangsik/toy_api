@@ -23,13 +23,13 @@ export class AuthController {
     Logger.log(`Login : ${JSON.stringify(dto)}`);
     const result = await this.authService.login(dto);
 
-    Logger.debug(`Login result : ${JSON.stringify(result)}`);
+    // Logger.debug(`Login result : ${JSON.stringify(result)}`);
 
     const userResponse = plainToInstance(LoginResponseDto, result, {
       excludeExtraneousValues: true,
     });
 
-    Logger.debug(`Login response : ${JSON.stringify(userResponse)}`);
+    // Logger.debug(`Login response : ${JSON.stringify(userResponse)}`);
 
     return userResponse;
   }

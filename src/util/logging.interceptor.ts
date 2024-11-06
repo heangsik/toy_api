@@ -5,7 +5,7 @@ import {
   Logger,
   NestInterceptor,
 } from '@nestjs/common';
-import { Observable, tap } from 'rxjs';
+import { catchError, Observable, tap } from 'rxjs';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
@@ -21,9 +21,17 @@ export class LoggingInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       tap((response) => {
+        const responseTime = Date.now() - now;
         Logger.log(
-          `response : ${method} / ${url} ${Date.now() - now}ms ${JSON.stringify(response)}`,
+          `response : ${method}|${url} [${responseTime}ms]-${JSON.stringify(response)}`,
         );
+      }),
+      catchError((error) => {
+        const responseTime = Date.now() - now;
+        Logger.log(
+          `response : ${method}|${url} [${responseTime}ms]-${error.message}`,
+        );
+        throw error;
       }),
     );
   }

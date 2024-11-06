@@ -11,6 +11,7 @@ import * as bcrypt from 'bcrypt';
 import { access } from 'fs';
 import { JwtService } from '@nestjs/jwt';
 import e from 'express';
+import { log } from 'console';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +29,9 @@ export class AuthService {
     Logger.log(`find user : ${JSON.stringify(user)}`);
 
     // 패스워드 체크
-    const isPasswordValid = bcrypt.compare(dto.password, user.password);
+    const isPasswordValid = await bcrypt.compare(dto.password, user.password);
+
+    const isMatch1 = await bcrypt.compare(dto.password, user.password);
 
     if (!isPasswordValid) {
       Logger.log('Invalid password');
