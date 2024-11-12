@@ -11,6 +11,7 @@ import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from 'src/meta/public.meta';
 import { Request } from 'express';
 import { UserService } from 'src/user/user.service';
+import { AuthGuard as NestAuthGuard } from '@nestjs/passport';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {

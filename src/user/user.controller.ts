@@ -8,6 +8,7 @@ import {
   Delete,
   Logger,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -24,6 +25,9 @@ import { plainToInstance } from 'class-transformer';
 import { UserResponseDto } from './dto/response-uesr.dto';
 import { Http } from 'winston/lib/winston/transports';
 import { Public } from 'src/meta/public.meta';
+import { Roles } from 'src/meta/role.meta';
+import { Role } from 'src/util/enums/role.enum';
+import { RolesGuard } from 'src/auth/role.guard.ts.guard';
 
 @ApiTags('User')
 @ApiBearerAuth()
@@ -54,7 +58,9 @@ export class UserController {
     return userResponse;
   }
 
-  @Get()
+  @Get('all')
+  @Roles(Role.USER)
+  @UseGuards(RolesGuard)
   findAll() {
     return this.userService.findAll();
   }
